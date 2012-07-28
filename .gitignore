@@ -13,3 +13,4 @@ config.d/*.json
 Thumbs.db
 Desktop.ini
 node_modules
+user.db

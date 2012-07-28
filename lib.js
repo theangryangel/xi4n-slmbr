@@ -6,7 +6,7 @@ var model = {
 		var id = this.id(userid);
 		var m = database.get(id);
 		if (!m)
-			m = { distance: 0, points: 0, position: { x:0, y:0, z:0 } };
+			m = { distance: 0, points: 0, position: { x: 0, y: 0, z: 0 } };
 
 		return m;
 	},
@@ -36,8 +36,21 @@ exports.init = function()
 
 		var m = model.fetch(db, c.uname);
 
-		// todo - welcome - depends buttons.js
-		// show current points
+		var messages = [
+			'Welcome to slmbr.',
+			'Life cruising too fast? Slmbr is for you.',
+			'Gain points by not moving.',
+			'Your current points are: ' + m.points + '.'
+		];
+
+		for (var i = 0; i < messages.length; i++)
+		{
+			var welcome = new this.insim.IS_MTC;
+			welcome.ucid = ucid;
+			welcome.text = messages[i];
+
+			this.client.send(welcome);
+		}
 	});
 
 	this.client.on('state:plyrupdate', function(plids)
@@ -72,15 +85,27 @@ exports.init = function()
 					m.points += 1;
 
 				if ((m.points % 10) == 0)
-					// send message to user of their current points
+				{
+					var messages = [
+						'New milestone reached!',
+						'Your current points are: ' + m.points + '.'
+					];
+
+					for (var i = 0; i < messages.length; i++)
+					{
+						var welcome = new this.insim.IS_MTC;
+						welcome.ucid = p.ucid;
+						welcome.text = messages[i];
+
+						this.client.send(welcome);
+					}
+				}
 			}
 
-			// update position
 			m.position.x = p.x;
 			m.position.y = p.y;
 			m.position.z = p.z;
 
-			// save
 			model.save(db, c.uname, m);
 		}
 	});

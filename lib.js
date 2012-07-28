@@ -76,7 +76,7 @@ exports.init = function()
 
 	this.client.on('state:plyrleave', function(plid)
 	{
-		var p = this.client.state.getPlyrByPlid(plids[i]);
+		var p = this.client.state.getPlyrByPlid(plid);
 		if (!p)
 			return;
 
@@ -140,7 +140,7 @@ exports.init = function()
 				var d = Math.abs(xy^2 + z^2);
 
 				if (d < 10000)
-					m.points += 1 - d;
+					m.points += 1;
 
 				if ((m.points != m.milestone) && ((m.points % 10) == 0))
 				{
